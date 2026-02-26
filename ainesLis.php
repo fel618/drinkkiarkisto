@@ -1,4 +1,6 @@
 <?php
+include("yhteys.php");
+
 // Tietokantayhteys
 $servername = "localhost";
 $username = "root";
