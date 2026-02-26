@@ -20,7 +20,7 @@ if (isset($_POST['laheta'])) {
                 WHERE a.Nimi LIKE '%$haku%' AND d.Hyvaksytty=1";
     }
 
-    $tulos = $yhteys->query($sql);
+    $tulos = $conn->query($sql);
 
     while ($row = $tulos->fetch_assoc()) {
 

@@ -1,6 +1,9 @@
 <?php
 session_start();
-include("yhteys.php"); // подключение к БД
+include("yhteys.php"); 
+// FOR TEST
+$_SESSION['rooli'] = "admin";
+$_SESSION['id'] = 1;
 
 if (!isset($_SESSION['rooli'])) {
     die("Ei käyttöoikeutta");
@@ -24,7 +27,7 @@ if (isset($_POST['laheta'])) {
         $virhe = "Nimi ei saa olla tyhjä";
     } else {
 
-        $tarkistus = $yhteys->query("SELECT * FROM Drinkki WHERE Nimi='$nimi'");
+        $tarkistus = $conn->query("SELECT * FROM Drinkki WHERE Nimi='$nimi'");
         if ($tarkistus->num_rows > 0) {
             $virhe = "Drinkki on jo olemassa";
         } else {
@@ -63,7 +66,7 @@ Juomalaji: <input type="text" name="juomalaji"><br><br>
 Raaka-aine:<br>
 
 <?php
-$ainekset = $yhteys->query("SELECT * FROM Aines");
+$ainekset = $conn->query("SELECT * FROM Aines");
 for ($i=1; $i<=3; $i++) {
     echo "<select name='aines$i'>";
     $ainekset->data_seek(0);
