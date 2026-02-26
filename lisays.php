@@ -45,7 +45,7 @@ if (isset($_POST['laheta'])) {
                     $maara = trim($_POST["maara$i"]);
 
                     if ($maara != "") {
-                        $yhteys->query("INSERT INTO Drinkki_Aines (DrinkkiID, AinesID, Maara)
+                        $conn->query("INSERT INTO Drinkki_Aines (DrinkkiID, AinesID, Maara)
                                         VALUES ($last_id, $aines, '$maara')");
                     }
                 }
