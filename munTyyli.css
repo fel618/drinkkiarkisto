@@ -74,3 +74,19 @@ button:hover, input[type=submit]:hover {
         width: 90%;
     }
 }
+
+/* HAKU */
+.drinkki{
+    background:#f4f4f4;
+    padding:15px;
+    margin:15px 0;
+    border-radius:8px;
+}
+
+h2{
+    color:#333;
+}
+
+form{
+    margin-bottom:20px;
+}
