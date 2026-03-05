@@ -1,6 +1,7 @@
 <?php
 session_start();
 include("yhteys.php"); 
+
 // FOR TEST
 $_SESSION['rooli'] = "admin";
 $_SESSION['id'] = 1;
@@ -16,7 +17,24 @@ if ($_SESSION['rooli'] == "admin") {
 }
 
 $virhe = "";
+?>
 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Lisää resepti</title>
+
+<link rel="stylesheet" href="munTyyli.css">
+<script src="munJava.js"></script>
+
+</head>
+
+<body>
+
+<?php include("naviUser.php"); ?>
+
+<?php
 if (isset($_POST['laheta'])) {
 
     $nimi = trim($_POST['nimi']);
@@ -46,7 +64,7 @@ if (isset($_POST['laheta'])) {
 
                     if ($maara != "") {
                         $conn->query("INSERT INTO Drinkki_Aines (DrinkkiID, AinesID, Maara)
-                                        VALUES ($last_id, $aines, '$maara')");
+                        VALUES ($last_id, $aines, '$maara')");
                     }
                 }
 
@@ -60,20 +78,30 @@ if (isset($_POST['laheta'])) {
 <h2>Lisää resepti</h2>
 
 <form method="post">
-Nimi: <input type="text" name="nimi"><br><br>
-Juomalaji: <input type="text" name="juomalaji"><br><br>
+
+Nimi:
+<input type="text" name="nimi"><br><br>
+
+Juomalaji:
+<input type="text" name="juomalaji"><br><br>
 
 Raaka-aine:<br>
 
 <?php
 $ainekset = $conn->query("SELECT * FROM Aines");
+
 for ($i=1; $i<=3; $i++) {
+
     echo "<select name='aines$i'>";
+
     $ainekset->data_seek(0);
+
     while($row = $ainekset->fetch_assoc()) {
         echo "<option value='".$row['AinesID']."'>".$row['Nimi']."</option>";
     }
+
     echo "</select>";
+
     echo " Määrä: <input type='text' name='maara$i'><br><br>";
 }
 ?>
@@ -82,6 +110,10 @@ Ohje:<br>
 <textarea name="ohje"></textarea><br><br>
 
 <input type="submit" name="laheta" value="Lisää resepti">
+
 </form>
 
 <?php echo $virhe; ?>
+
+</body>
+</html>

@@ -28,7 +28,7 @@ if (isset($_POST['laheta'])) {
         echo "Juomalaji: ".$row['Juomalaji']."<br>";
 
         $id = $row['DrinkkiID'];
-        $aines = $yhteys->query("
+        $aines = $conn->query("
             SELECT a.Nimi, da.Maara 
             FROM Drinkki_Aines da
             JOIN Aines a ON da.AinesID = a.AinesID

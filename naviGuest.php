@@ -1,6 +1,5 @@
-<?php
-echo '
-| <a href="login.php">Kirjaudu</a> |
-<a href="rekisteri.php">Rekisteröidy</a> |
-';
-?>
+<div class="navbar">
+<a href="login.php">Login</a>
+<a href="rekisteri.php">Rekisteröidy</a>
+<a href="haku.php">Haku</a>
+</div>

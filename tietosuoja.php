@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Tietosuojaseloste</title>
+    <link rel="stylesheet" href="munTyyli.css">
 </head>
 <body>
 
