@@ -63,7 +63,7 @@ button:hover, input[type=submit]:hover {
     .navbar a {
         float: none;
         display: block;
-        text-align: left;
+        text-align: center;
     }
 
     .container {
@@ -89,4 +89,8 @@ h2{
 
 form{
     margin-bottom:20px;
+}
+
+.ainesRivi{
+    margin-bottom:10px;
 }

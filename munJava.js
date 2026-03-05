@@ -1,14 +1,16 @@
-function lisaaAines() {
+function lisaaAines(){
 
-    var container = document.getElementById("ainesLista");
+    const lista = document.getElementById("ainesLista");
 
-    var div = document.createElement("div");
+    const uusi = document.createElement("div");
+    uusi.className = "ainesRivi";
 
-    div.innerHTML =
+    const template = document.querySelector("select[name='aines[]']").innerHTML;
+
+    uusi.innerHTML =
         "<select name='aines[]'>" +
-        document.getElementById("ainesTemplate").innerHTML +
-        "</select>" +
-        " Määrä: <input type='text' name='maara[]'><br><br>";
+        template +
+        "</select> Määrä: <input type='text' name='maara[]'>";
 
-    container.appendChild(div);
+    lista.appendChild(uusi);
 }
