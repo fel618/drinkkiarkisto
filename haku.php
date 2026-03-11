@@ -5,10 +5,12 @@ include("yhteys.php");
 <!DOCTYPE html>
 <html lang="fi">
 <head>
+
 <meta charset="UTF-8">
 <title>Drinkkihaku</title>
 
 <link rel="stylesheet" href="munTyyli.css">
+<script src="munJava.js"></script>
 
 </head>
 
@@ -20,13 +22,19 @@ include("yhteys.php");
 
 <form method="post">
 
-Haku:
+Haku:<br>
 <input type="text" name="haku">
 
 <br><br>
 
-<input type="radio" name="tyyppi" value="nimi" checked> Nimi
-<input type="radio" name="tyyppi" value="aines"> Ainesosa
+<div class="search-type">
+
+<button type="button" onclick="setSearch('nimi')" id="btnNimi">Nimi</button>
+<button type="button" onclick="setSearch('aines')" id="btnAines">Ainesosa</button>
+
+<input type="hidden" name="tyyppi" id="tyyppi" value="nimi">
+
+</div>
 
 <br><br>
 
@@ -47,47 +55,63 @@ if (isset($_POST['laheta'])) {
 
         $sql = "SELECT * FROM Drinkki WHERE Hyvaksytty=1";
 
-    } else if ($tyyppi == "nimi") {
+    } 
+    elseif ($tyyppi == "aines") {
 
-        $sql = "SELECT * FROM Drinkki
-                WHERE Nimi LIKE '%$haku%' AND Hyvaksytty=1";
-
-    } else {
-
-        $sql = "SELECT DISTINCT d.* FROM Drinkki d
+        $sql = "SELECT DISTINCT d.*
+                FROM Drinkki d
                 JOIN Drinkki_Aines da ON d.DrinkkiID = da.DrinkkiID
                 JOIN Aines a ON da.AinesID = a.AinesID
-                WHERE a.Nimi LIKE '%$haku%' AND d.Hyvaksytty=1";
+                WHERE a.Nimi LIKE '%$haku%'
+                AND d.Hyvaksytty = 1";
+
+    } 
+    else {
+
+        $sql = "SELECT *
+                FROM Drinkki
+                WHERE Nimi LIKE '%$haku%'
+                AND Hyvaksytty = 1";
+
     }
 
     $tulos = $conn->query($sql);
 
-    while ($row = $tulos->fetch_assoc()) {
+    if ($tulos->num_rows > 0) {
 
-        echo "<div class='drinkki'>";
+        while ($row = $tulos->fetch_assoc()) {
 
-        echo "<h3>".$row['Nimi']."</h3>";
-        echo "<p><b>Juomalaji:</b> ".$row['Juomalaji']."</p>";
+            echo "<div class='drinkki'>";
 
-        $id = $row['DrinkkiID'];
+            echo "<h3>".$row['Nimi']."</h3>";
+            echo "<b>Juomalaji:</b> ".$row['Juomalaji']."<br><br>";
 
-        $aines = $conn->query("
+            $id = $row['DrinkkiID'];
+
+            $aines = $conn->query("
             SELECT a.Nimi, da.Maara
             FROM Drinkki_Aines da
             JOIN Aines a ON da.AinesID = a.AinesID
             WHERE da.DrinkkiID=$id
-        ");
+            ");
 
-        echo "<p><b>Ainekset:</b></p>";
+            echo "<b>Ainekset:</b><br>";
 
-        while ($r = $aines->fetch_assoc()) {
-            echo $r['Nimi']." ".$r['Maara']."<br>";
+            while ($r = $aines->fetch_assoc()) {
+                echo $r['Nimi']." ".$r['Maara']."<br>";
+            }
+
+            echo "<br><b>Ohje:</b><br>".$row['Valmistusohje'];
+
+            echo "</div>";
         }
 
-        echo "<p><b>Ohje:</b> ".$row['Valmistusohje']."</p>";
+    } else {
 
-        echo "</div><hr>";
+        echo "<p>Hakutuloksia ei löytynyt.</p>";
+
     }
+
 }
 ?>
 

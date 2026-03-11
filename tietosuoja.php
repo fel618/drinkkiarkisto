@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="munTyyli.css">
 </head>
 <body>
+<?php include("naviGuest.php"); ?>
 
 <h1>Tietosuojaseloste - drinkkiarkiston käyttäjille</h1>
 

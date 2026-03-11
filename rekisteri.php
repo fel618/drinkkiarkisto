@@ -55,6 +55,7 @@ if (isset($_POST["rekisteroidy"])) {
     <link rel="stylesheet" href="munTyyli.css">
 </head>
 <body>
+<?php include("naviGuest.php"); ?>
 
 <h1>Rekisteröidy drinkkiarkiston käyttäjäksi</h1>
 
@@ -77,7 +78,7 @@ if ($onnistui != "") {
 
 <p>
 Rekisteröityessäsi hyväksyt henkilötietojesi käsittelyehdot.<br>
-<a href="#">Lue drinkkiarkiston tietosuojaseloste</a>
+<a href="tietosuoja.php">Lue drinkkiarkiston tietosuojaseloste</a>
 </p>
 
 </body>
