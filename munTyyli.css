@@ -12,6 +12,11 @@ ul {
     padding:0;
 }
 
+.text-page{
+    text-align:left;
+    line-height:1.6;
+}
+
 /* NAVBAR */
 
 .navbar{
@@ -142,3 +147,4 @@ input[type=submit]:hover{
 .container li{
     margin-bottom:8px;
 }
+

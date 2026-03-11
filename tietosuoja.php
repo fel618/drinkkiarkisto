@@ -7,7 +7,8 @@
 </head>
 <body>
 <?php include("naviGuest.php"); ?>
-
+<div class="container text-page">
+    
 <h1>Tietosuojaseloste - drinkkiarkiston käyttäjille</h1>
 
 <h2>1. Rekisterin nimi</h2>
