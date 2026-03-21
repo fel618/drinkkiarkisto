@@ -16,8 +16,9 @@ include("yhteys.php");
 
 <body>
 
-<?php include("naviGuest.php"); ?>
+<?php include("navi.php"); ?>
 
+<div class="container">
 <h2>Hae drinkkejä</h2>
 
 <form method="post">
@@ -114,6 +115,6 @@ if (isset($_POST['laheta'])) {
 
 }
 ?>
-
+</div>
 </body>
 </html>

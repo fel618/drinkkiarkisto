@@ -46,7 +46,8 @@ if (isset($_POST["lisaa"])) {
     <link rel="stylesheet" href="munTyyli.css">
 </head>
 <body>
-
+<?php include("navi.php"); ?>
+<div class="container">
 <h2>Lisää uusi aines</h2>
 
 <?php
@@ -76,7 +77,7 @@ while ($rivi = $tulos->fetch_assoc()) {
 }
 ?>
 </ul>
-
+</div>
 </body>
 </html>
 

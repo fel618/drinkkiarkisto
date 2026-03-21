@@ -78,8 +78,8 @@ if (isset($_POST['laheta'])) {
 
 <body>
 
-<?php include("naviUser.php"); ?>
-
+<?php include("navi.php"); ?>
+<div class="container">
 <h2>Lisää uusi drinkki</h2>
 
 <?php
@@ -135,6 +135,6 @@ Ohje:<br>
 <input type="submit" name="laheta" value="Lisää resepti">
 
 </form>
-
+</div>
 </body>
 </html>
