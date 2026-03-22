@@ -8,6 +8,8 @@
 
 <a href="poisto.php">Poista reseptejä</a>
 
+<a href="poistaKayttaja.php">Poista käyttäjä</a>
+
 <a href="ainesLis.php">Ainekset</a>
 
 <a href="tietosuoja.php">Tietosuoja</a>

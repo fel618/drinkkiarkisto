@@ -1,14 +1,18 @@
 <?php
-include("yhteys.php");
+session_start();
 
-// Tietokantayhteys
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "drinkityan"; 
+if (!isset($_SESSION['kayttaja_id'])) {
+    header("Location: login.php");
+    exit();
+}
 
 $virhe = "";
 $onnistui = "";
+
+?>
+
+<?php
+include("yhteys.php");
 
 // Lomakkeen käsittely
 if (isset($_POST["lisaa"])) {

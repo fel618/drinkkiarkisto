@@ -2,27 +2,103 @@
 session_start();
 include("yhteys.php");
 
-// TEST (убери когда появится login.php)
-$_SESSION['rooli'] = "admin";
-$_SESSION['id'] = 1;
-
-if (!isset($_SESSION['rooli'])) {
-    die("Ei käyttöoikeutta");
-}
-
-if ($_SESSION['rooli'] == "admin") {
-    $hyvaksytty = 1;
-} else {
-    $hyvaksytty = 0;
+if (!isset($_SESSION['kayttaja_id'])) {
+    header("Location: login.php");
+    exit();
 }
 
 $virhe = "";
+?>
 
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+
+<meta charset="UTF-8">
+<title>Lisää resepti</title>
+
+<link rel="stylesheet" href="munTyyli.css">
+
+<script>
+// JS
+function lisaaAines() {
+
+    let lista = document.getElementById("ainesLista");
+
+    let div = document.createElement("div");
+    div.classList.add("aines-rivi");
+
+    div.innerHTML = `
+        <select name="aines[]">
+            <?php
+            $ainekset = $conn->query("SELECT * FROM Aines");
+            while($row = $ainekset->fetch_assoc()){
+                echo "<option value='".$row['AinesID']."'>".$row['Nimi']."</option>";
+            }
+            ?>
+        </select>
+
+        <input type="text" name="maara[]" placeholder="Määrä">
+
+        <button type="button" onclick="this.parentElement.remove()">X</button>
+    `;
+
+    lista.appendChild(div);
+}
+
+// lisätään heti yksi ainesosa
+window.onload = function() {
+    lisaaAines();
+}
+</script>
+
+</head>
+
+<body>
+
+<?php include("navi.php"); ?>
+
+<div class="container">
+<h2>Lisää uusi drinkki</h2>
+
+<?php if (!empty($virhe)) { ?>
+    <p style="color:red;"><?php echo $virhe; ?></p>
+<?php } ?>
+
+<form method="post">
+
+Nimi:<br>
+<input type="text" name="nimi"><br><br>
+
+Juomalaji:<br>
+<input type="text" name="juomalaji"><br><br>
+
+<h3>Ainekset</h3>
+
+<div id="ainesLista"></div>
+
+<br>
+
+<button type="button" onclick="lisaaAines()">+ Lisää aines</button>
+
+<br><br>
+
+Ohje:<br>
+<textarea name="ohje" rows="5" cols="40"></textarea>
+
+<br><br>
+
+<input type="submit" name="laheta" value="Lisää resepti">
+
+</form>
+
+<?php
 if (isset($_POST['laheta'])) {
 
     $nimi = trim($_POST['nimi']);
     $juomalaji = trim($_POST['juomalaji']);
     $ohje = trim($_POST['ohje']);
+    $hyvaksytty = 1; // lisäyksessä hyväksytty heti
 
     if ($nimi == "") {
         $virhe = "Nimi ei saa olla tyhjä";
@@ -35,25 +111,23 @@ if (isset($_POST['laheta'])) {
         } else {
 
             $sql = "INSERT INTO Drinkki (Nimi, Juomalaji, Valmistusohje, Hyvaksytty, Lisaaja)
-                    VALUES ('$nimi','$juomalaji','$ohje',$hyvaksytty,".$_SESSION['id'].")";
+                    VALUES ('$nimi','$juomalaji','$ohje',$hyvaksytty,".$_SESSION['kayttaja_id'].")";
 
             if ($conn->query($sql) === TRUE) {
 
-                $last_id = $conn->insert_id;
+                $drinkkiID = $conn->insert_id;
 
-                // Haetaan kaikki ainekset
-                $ainekset = $_POST['aines'];
-                $maarat = $_POST['maara'];
+                if (isset($_POST['aines'])) {
 
-                for ($i=0; $i<count($ainekset); $i++) {
+                    foreach ($_POST['aines'] as $i => $ainesID) {
 
-                    $aines = $ainekset[$i];
-                    $maara = trim($maarat[$i]);
+                        $maara = $_POST['maara'][$i];
 
-                    if ($maara != "") {
+                        if ($maara != "") {
 
-                        $conn->query("INSERT INTO Drinkki_Aines (DrinkkiID, AinesID, Maara)
-                                      VALUES ($last_id, $aines, '$maara')");
+                            $conn->query("INSERT INTO Drinkki_Aines (DrinkkiID, AinesID, Maara)
+                                          VALUES ($drinkkiID, $ainesID, '$maara')");
+                        }
                     }
                 }
 
@@ -64,77 +138,6 @@ if (isset($_POST['laheta'])) {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="fi">
-<head>
-
-<meta charset="UTF-8">
-<title>Lisää resepti</title>
-
-<link rel="stylesheet" href="munTyyli.css">
-<script src="munJava.js"></script>
-
-</head>
-
-<body>
-
-<?php include("navi.php"); ?>
-<div class="container">
-<h2>Lisää uusi drinkki</h2>
-
-<?php
-if ($virhe != "") {
-    echo "<p style='color:red;'>$virhe</p>";
-}
-?>
-
-<form method="post">
-
-Nimi:<br>
-<input type="text" name="nimi"><br><br>
-
-Juomalaji:<br>
-<input type="text" name="juomalaji"><br><br>
-
-<h3>Ainekset</h3>
-
-<div id="ainesLista">
-
-<div class="ainesRivi">
-
-<select name="aines[]">
-
-<?php
-$ainekset = $conn->query("SELECT * FROM Aines");
-
-while($row = $ainekset->fetch_assoc()){
-    echo "<option value='".$row['AinesID']."'>".$row['Nimi']."</option>";
-}
-?>
-
-</select>
-
-Määrä:
-<input type="text" name="maara[]">
-
-</div>
-
-</div>
-
-<br>
-
-<button type="button" onclick="lisaaAines()">Lisää aines</button>
-
-<br><br>
-
-Ohje:<br>
-<textarea name="ohje" rows="5" cols="40"></textarea>
-
-<br><br>
-
-<input type="submit" name="laheta" value="Lisää resepti">
-
-</form>
 </div>
 </body>
 </html>

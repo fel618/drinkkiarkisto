@@ -1,3 +1,8 @@
+<?php
+session_start();
+include("yhteys.php");
+?>
+
 <!DOCTYPE html>
 <html lang="fi">
 <head>

@@ -2,25 +2,39 @@
 session_start();
 include("yhteys.php");
 
+if (!isset($_SESSION['kayttaja_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
 if ($_SESSION['rooli'] != "admin") {
     die("Ei käyttöoikeutta");
 }
 
 if (isset($_POST['hyvaksy'])) {
-
     $id = $_POST['id'];
 
-    $conn->query("UPDATE Drinkki SET Hyvaksytty=1 WHERE DrinkkiID=$id");
+    $stmt = $conn->prepare("UPDATE Drinkki SET Hyvaksytty=1 WHERE DrinkkiID=?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
 
+    header("Location: hyvaksy.php");
+    exit();
 }
 
 if (isset($_POST['hylkaa'])) {
-
     $id = $_POST['id'];
 
-    $conn->query("DELETE FROM Drinkki_Aines WHERE DrinkkiID=$id");
-    $conn->query("DELETE FROM Drinkki WHERE DrinkkiID=$id");
+    $stmt = $conn->prepare("DELETE FROM Drinkki_Aines WHERE DrinkkiID=?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
 
+    $stmt = $conn->prepare("DELETE FROM Drinkki WHERE DrinkkiID=?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    header("Location: hyvaksy.php");
+    exit();
 }
 
 $tulos = $conn->query("SELECT DrinkkiID, Nimi FROM Drinkki WHERE Hyvaksytty=0");
@@ -52,9 +66,9 @@ while($row = $tulos->fetch_assoc()){
 
 <input type="hidden" name="id" value="<?php echo $row['DrinkkiID']; ?>">
 
-<button name="hyvaksy">Hyväksy</button>
+<button type="submit" name="hyvaksy">Hyväksy</button>
 
-<button name="hylkaa">Hylkää</button>
+<button type="submit" name="hylkaa">Hylkää</button>
 
 </form>
 

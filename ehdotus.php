@@ -2,11 +2,13 @@
 session_start();
 include("yhteys.php");
 
-if (!isset($_SESSION['id'])) {
-    die("Kirjaudu sisään");
+if (!isset($_SESSION['kayttaja_id'])) {
+    header("Location: login.php");
+    exit();
 }
 
-$viesti = "";
+$virhe = "";
+
 ?>
 
 <!DOCTYPE html>
@@ -44,7 +46,7 @@ function lisaaAines() {
     lista.appendChild(div);
 }
 
-// добавим 1 ингредиент сразу
+// lisätään heti yksi ainesosa
 window.onload = function() {
     lisaaAines();
 }
