@@ -1,5 +1,6 @@
 <?php
 session_start();
+include("yhteys.php");
 
 if (!isset($_SESSION['kayttaja_id'])) {
     header("Location: login.php");
@@ -12,8 +13,6 @@ $onnistui = "";
 ?>
 
 <?php
-include("yhteys.php");
-
 // Lomakkeen käsittely
 if (isset($_POST["lisaa"])) {
 
