@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['kayttaja_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
 include("yhteys.php");
 ?>
 

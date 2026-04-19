@@ -7,6 +7,11 @@ if (!isset($_SESSION['kayttaja_id'])) {
     exit();
 }
 
+// ADMIN
+if ($_SESSION['rooli'] != "admin") {
+    die("Ei käyttöoikeutta");
+}
+
 $virhe = "";
 $onnistui = "";
 

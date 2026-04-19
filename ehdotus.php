@@ -98,7 +98,7 @@ if (isset($_POST['laheta'])) {
     $hyvaksytty = 0;
 
     $sql = "INSERT INTO Drinkki (Nimi, Juomalaji, Valmistusohje, Hyvaksytty, Lisaaja)
-            VALUES ('$nimi','$juomalaji','$ohje',$hyvaksytty,".$_SESSION['id'].")";
+            VALUES ('$nimi','$juomalaji','$ohje',$hyvaksytty,".$_SESSION['kayttaja_id'].")";
 
     if ($conn->query($sql) === TRUE) {
 
